@@ -3,12 +3,6 @@ allowed-tools:
   - Task
   - WebSearch
   - WebFetch
-  - mcp__obsidian__get_graph_stats
-  - mcp__obsidian__get_local_graph
-  - mcp__obsidian__get_outlinks
-  - mcp__obsidian__read_note
-  - mcp__obsidian__write_note
-  - mcp__obsidian__patch_note
 ---
 
 # Cortex Research
@@ -17,15 +11,31 @@ Research a topic and add knowledge to the Cortex.
 
 ## Instructions
 
-You are performing a **LEARN** operation on the Cortex. Research the topic and store it properly.
+This is a two-phase operation:
 
-### Process
+### Phase 1: Research (Main Session)
 
-1. **Research**: If given a URL, fetch it with WebFetch. If given a topic, search with WebSearch then fetch relevant results.
-2. **Find related nodes**: Use `mcp__obsidian__get_graph_stats` to identify where this knowledge connects
-3. **Create the note**: Follow the expert template (below)
-4. **Link outbound**: Add `[[wiki-links]]` to related existing nodes
-5. **Patch backlinks**: Update related hubs to link BACK to your new note
+Do the research yourself using WebSearch and WebFetch:
+1. If given a URL, fetch it with WebFetch
+2. If given a topic, search with WebSearch then fetch relevant results
+3. Synthesize the key knowledge to store
+
+### Phase 2: Store in Cortex (Agent)
+
+**Spawn a Cortex Agent** to handle all graph operations:
+
+```
+Task tool:
+  subagent_type: "cortex-agent"
+  model: "sonnet"
+  prompt: "Perform a LEARN operation. Store this knowledge: [your synthesis]..."
+```
+
+The agent will:
+1. **Find related nodes**: Identify where this knowledge connects
+2. **Create the note**: Following the expert template
+3. **Link outbound**: Add wiki-links to related existing nodes
+4. **Patch backlinks**: Update related hubs to link BACK to the new note
 
 ### Expert Note Template
 

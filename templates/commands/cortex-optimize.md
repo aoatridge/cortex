@@ -1,15 +1,6 @@
 ---
 allowed-tools:
   - Task
-  - mcp__obsidian__get_graph_stats
-  - mcp__obsidian__get_graph
-  - mcp__obsidian__get_local_graph
-  - mcp__obsidian__get_outlinks
-  - mcp__obsidian__get_backlinks
-  - mcp__obsidian__read_note
-  - mcp__obsidian__read_multiple_notes
-  - mcp__obsidian__write_note
-  - mcp__obsidian__patch_note
 ---
 
 # Cortex Optimize
@@ -18,14 +9,22 @@ Audit and optimize the Cortex knowledge graph.
 
 ## Instructions
 
-You are performing an **OPTIMIZE** operation on the Cortex. Analyze the graph structure and make improvements.
+**FIRST: Spawn a Cortex Agent.** Do NOT call any `mcp__obsidian__*` tools directly.
 
-### Process
+```
+Task tool:
+  subagent_type: "cortex-agent"
+  model: "sonnet"
+  prompt: "Perform an OPTIMIZE operation on the Cortex..."
+```
 
-1. **Audit current state**: Call `mcp__obsidian__get_graph_stats` for orphans, hubs, edge counts
+The agent will:
+1. **Audit current state**: Get graph stats for orphans, hubs, edge counts
 2. **Identify issues**: Orphan nodes, missing links, weak connections, duplicates
 3. **Recommend improvements**: List specific changes with reasoning
-4. **Execute with approval**: Make changes (create links, merge duplicates, etc.)
+4. **Return findings**: Condensed report back to main session
+
+After receiving the agent's report, present it to the user and ask for approval before having the agent execute changes.
 
 ### What to Look For
 

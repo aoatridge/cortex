@@ -119,21 +119,37 @@ These automate the LEARN and OPTIMIZE abilities with guided workflows.
 
 ---
 
-## Advanced: Cortex Agent
+## CRITICAL: Always Use the Cortex Agent
 
-For complex operations, spawn a specialized **Cortex Agent** via the Task tool. The agent template is at `.claude/agents/cortex-agent.md` (relative to the project root).
+**NEVER call Obsidian MCP tools (`mcp__obsidian__*`) directly from the main session.**
 
-**Why use it: Context isolation.** Graph operations are context-heavy. The Cortex Agent runs in a separate Task context, does all the heavy lifting (reading notes, traversing), and returns only a condensed result. Your main session stays clean.
+For ALL Cortex operations (READ, LEARN, OPTIMIZE), you MUST:
+1. Spawn a **Cortex Agent** via the Task tool with `subagent_type: "cortex-agent"`
+2. Let the agent handle all graph traversal and manipulation
+3. Receive only the condensed result back
 
-The Cortex Agent:
-- **Isolates context** — Heavy graph reads don't bloat main session
-- Handles all graph traversal automatically
-- Enforces sparse activation and commandments
-- Manages bidirectional linking for LEARN operations
-- Reports structured proof (traversal path, verification codes)
+**This is not negotiable.** Small graphs, simple queries, "just checking one thing" — doesn't matter. **Use the agent.**
 
-Use Haiku model for READ operations, Sonnet for LEARN/OPTIMIZE.
+### Why This Matters
+
+- **Context isolation** — Graph operations are context-heavy; the agent keeps the main session clean
+- **Consistency** — Always following the same pattern prevents drift and mistakes
+- **Enforcement** — The agent follows commandments automatically
+
+### Red Flags (You're Rationalizing)
+
+| Thought | Reality |
+|---------|---------|
+| "This graph is small enough" | Use the agent anyway. Consistency beats optimization. |
+| "I'll just check one thing" | Agent. Always agent. |
+| "It's faster to do it directly" | Context bloat costs more than agent overhead. |
+| "I already started directly" | Stop. Spawn the agent. |
+
+### Model Selection
+
+- **READ operations**: Use `model: "haiku"` for speed
+- **LEARN/OPTIMIZE operations**: Use `model: "sonnet"` for quality
 
 ---
 
-*Cortex v0.5 — Cortex Agent pattern added*
+*Cortex v0.6 — Mandatory agent use*

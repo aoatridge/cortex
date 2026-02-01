@@ -1,11 +1,6 @@
 ---
 allowed-tools:
   - Task
-  - mcp__obsidian__get_graph_stats
-  - mcp__obsidian__get_local_graph
-  - mcp__obsidian__get_outlinks
-  - mcp__obsidian__read_note
-  - mcp__obsidian__read_multiple_notes
 ---
 
 # Cortex Query
@@ -14,14 +9,20 @@ Ask a question and get an answer from the Cortex knowledge graph.
 
 ## Instructions
 
-You are performing a **READ** operation on the Cortex. Use sparse activation to retrieve relevant knowledge.
+**FIRST: Spawn a Cortex Agent.** Do NOT call any `mcp__obsidian__*` tools directly.
 
-### Process
+```
+Task tool:
+  subagent_type: "cortex-agent"
+  model: "haiku"
+  prompt: "Perform a READ operation on the Cortex. Question: [user's question]..."
+```
 
-1. **Start with hubs**: Call `mcp__obsidian__get_graph_stats` to identify high-connectivity nodes
-2. **Traverse, don't search**: Use `mcp__obsidian__get_local_graph` and `mcp__obsidian__get_outlinks` to follow connections
-3. **Read relevant notes**: Only read notes that appear relevant through traversal
-4. **Synthesize answer**: Combine knowledge from consulted notes
+The agent will:
+1. **Start with hubs**: Identify high-connectivity nodes via graph stats
+2. **Traverse, don't search**: Follow links with local_graph and outlinks
+3. **Read relevant notes**: Only notes that appear relevant through traversal
+4. **Return answer**: Synthesized response with traversal proof
 
 ### Commandments
 
