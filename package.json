@@ -1,6 +1,6 @@
 {
   "name": "cortex-ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Graph-based AI memory using Obsidian as a knowledge graph",
   "type": "module",
   "bin": {

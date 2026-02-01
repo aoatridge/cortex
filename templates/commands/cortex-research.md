@@ -1,131 +1,74 @@
+---
+allowed-tools:
+  - Task
+  - WebSearch
+  - WebFetch
+  - mcp__obsidian__get_graph_stats
+  - mcp__obsidian__get_local_graph
+  - mcp__obsidian__get_outlinks
+  - mcp__obsidian__read_note
+  - mcp__obsidian__write_note
+  - mcp__obsidian__patch_note
+---
+
 # Cortex Research
 
-You are populating the Cortex knowledge graph with new information.
+Research a topic and add knowledge to the Cortex.
 
-## Arguments
+## Instructions
 
-The user will provide either:
-- A **URL** to research (e.g., `/cortex-research https://docs.example.com/guide`)
-- A **topic** to research (e.g., `/cortex-research WebSocket authentication patterns`)
+You are performing a **LEARN** operation on the Cortex. Research the topic and store it properly.
 
-**User input:** $ARGUMENTS
+### Process
 
-## Phase 1: Research
+1. **Research**: If given a URL, fetch it with WebFetch. If given a topic, search with WebSearch then fetch relevant results.
+2. **Find related nodes**: Use `mcp__obsidian__get_graph_stats` to identify where this knowledge connects
+3. **Create the note**: Follow the expert template (below)
+4. **Link outbound**: Add `[[wiki-links]]` to related existing nodes
+5. **Patch backlinks**: Update related hubs to link BACK to your new note
 
-### If URL provided:
-1. Use `WebFetch` to retrieve and analyze the content
-2. Extract key concepts, patterns, and actionable knowledge
-3. Identify how this relates to existing graph knowledge
-
-### If topic provided:
-1. Use `WebSearch` to find authoritative sources
-2. Use `WebFetch` on the top 2-3 results
-3. Synthesize information from multiple sources
-4. Identify how this relates to existing graph knowledge
-
-### Always:
-- Focus on **actionable patterns**, not encyclopedic definitions
-- Note specific techniques, code patterns, best practices
-- Identify what questions this knowledge answers
-
-## Phase 2: Graph Integration
-
-Before creating notes, understand the current graph:
-
-1. Use `mcp__obsidian__get_graph_stats` to see existing hubs
-2. Identify which existing nodes relate to this new knowledge
-3. Plan how the new knowledge connects to the graph
-
-## Phase 3: Create Knowledge Nodes
-
-Create 1-3 well-structured notes following the expert template:
+### Expert Note Template
 
 ```markdown
 # [Domain Name]
 
 ## What This Expert Knows
-[2-3 sentences defining scope - what problems does this solve?]
+[2-3 sentences defining the scope of expertise]
 
 ## When To Activate
-- [Question pattern that should trigger this expert]
-- [Problem type this addresses]
-- [Keywords or concepts that indicate relevance]
+- [Trigger pattern 1]
+- [Trigger pattern 2]
+- [Trigger pattern 3]
 
 ## Core Patterns
-[Actionable knowledge - what should someone DO?]
-
-- **[Pattern Name]**: [How to apply it, when to use it]
-- **[Best Practice]**: [The technique + reasoning]
-- **[Common Approach]**: [Step-by-step or decision framework]
+- [Actionable heuristic or decision framework]
+- [Best practice with reasoning]
+- [Common pattern to apply]
 
 ## Related Experts
-- [[Existing Node]] — [WHY this connection matters, when to chain]
-- [[Another Node]] — [Context for the relationship]
+- [[Other Domain]] — [WHY this connection matters]
+- [[Another Domain]] — [Context for the relationship]
 
 ## Common Questions
 - "[Example question this expert handles]"
-- "[Another example question]"
+- "[Another example]"
 
 ---
-*Source: [URL or search terms used]*
-*Verification: [UNIQUE-CODE-####]*
+*Verification: [WORD-WORD-####]*
 ```
 
-### Requirements:
-- Include a unique verification code (format: WORD-WORD-####) for testing retrieval
-- Every note MUST link to at least 2 existing nodes
-- Explain WHY each link matters (contextual links)
+### Commandments
 
-## Phase 4: Bidirectional Linking
+- **Always include `.md` extension** in file paths
+- **Always link to related nodes** — Connections are intelligence
+- **Bidirectional linking** — Link OUT from your note AND patch hubs to link BACK
+- **Embed verification code** — Generate a unique `WORD-WORD-####` code
 
-**Critical step** - make the new knowledge discoverable:
+### Response Format
 
-1. For each existing hub you linked TO, use `mcp__obsidian__patch_note` to add a backlink
-2. Add the link in the hub's "Related Experts" section
-3. Include context: `[[New Note]] — [Why this connection matters]`
-
-Example patch:
-```
-Old: ## Related Experts
-- [[Existing Link]] — existing context
-
-New: ## Related Experts
-- [[Existing Link]] — existing context
-- [[Your New Note]] — [contextual explanation]
-```
-
-## Phase 5: Report
-
-Summarize what was learned and added:
-
-```
-## Research Complete
-
-### Sources
-- [URL or search result 1]
-- [URL or search result 2]
-
-### Notes Created
-1. **[Note Name]** - [Brief description]
-   - Links to: [[Hub1]], [[Hub2]]
-   - Backlinks added to: Hub1.md, Hub2.md
-
-### Graph Impact
-- Nodes: X → Y
-- Edges: X → Y
-
-### Key Knowledge Added
-- [Bullet point of main insight 1]
-- [Bullet point of main insight 2]
-
-### Verification Code
-[The code embedded in the note for testing]
-```
-
-## Anti-Patterns to Avoid
-
-- Creating notes without links (orphans)
-- Only linking OUT without patching hubs to link BACK
-- Writing encyclopedic definitions instead of actionable patterns
-- Dumping raw content instead of synthesizing knowledge
-- Forgetting the verification code
+Present:
+- **Note Created**: File path
+- **Outbound Links**: Notes this links to
+- **Backlinks Added**: Hubs patched to link back
+- **Verification Code**: The embedded code
+- **Summary**: What was learned

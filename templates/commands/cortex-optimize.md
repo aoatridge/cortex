@@ -1,85 +1,51 @@
+---
+allowed-tools:
+  - Task
+  - mcp__obsidian__get_graph_stats
+  - mcp__obsidian__get_graph
+  - mcp__obsidian__get_local_graph
+  - mcp__obsidian__get_outlinks
+  - mcp__obsidian__get_backlinks
+  - mcp__obsidian__read_note
+  - mcp__obsidian__read_multiple_notes
+  - mcp__obsidian__write_note
+  - mcp__obsidian__patch_note
+---
+
 # Cortex Optimize
 
-You are running a graph optimization audit for the Cortex knowledge system.
+Audit and optimize the Cortex knowledge graph.
 
-## Your Mission
+## Instructions
 
-Analyze the Obsidian knowledge graph and make improvements to strengthen connections, reduce fragmentation, and improve discoverability.
+You are performing an **OPTIMIZE** operation on the Cortex. Analyze the graph structure and make improvements.
 
-## Phase 1: Audit
+### Process
 
-Use the Obsidian MCP tools to analyze the current graph state:
+1. **Audit current state**: Call `mcp__obsidian__get_graph_stats` for orphans, hubs, edge counts
+2. **Identify issues**: Orphan nodes, missing links, weak connections, duplicates
+3. **Recommend improvements**: List specific changes with reasoning
+4. **Execute with approval**: Make changes (create links, merge duplicates, etc.)
 
-1. **Get graph stats** via `mcp__obsidian__get_graph_stats`
-   - Note total nodes and edges
-   - Identify orphan nodes (0 connections)
-   - Identify top hubs (highest connectivity)
-   - Check for unresolved links (broken references)
+### What to Look For
 
-2. **Analyze hub health** via `mcp__obsidian__get_local_graph` on top 3-5 hubs
-   - Are hubs well-connected to each other?
-   - Are there isolated clusters?
+- **Orphan nodes**: Notes with no connections (should be linked or removed)
+- **Missing connections**: Topics that should link but don't
+- **Duplicate concepts**: Multiple notes covering the same thing
+- **Weak hubs**: Important topics with too few connections
+- **Broken links**: References to non-existent notes
 
-3. **Check for issues:**
-   - Orphan nodes that should be linked
-   - Duplicate concepts that should be merged
-   - Weak connections (nodes with only 1-2 links)
-   - Missing bidirectional links
+### Commandments
 
-## Phase 2: Report
+- **Create missing connections** — When you see a gap, add the link
+- **Merge duplicates** — Consolidate overlapping concepts
+- **Promote orphans** — Isolated notes should be linked or questioned
+- **Bidirectional linking** — When adding links, add them in both directions
 
-Present findings in this format:
+### Response Format
 
-```
-## Graph Health Report
-
-### Current State
-- Nodes: X
-- Edges: X
-- Orphans: X (list them)
-- Top Hubs: (name + connection count)
-
-### Issues Found
-1. [Issue type]: [Description]
-2. ...
-
-### Recommended Actions
-1. [Action]: [Why it helps]
-2. ...
-```
-
-## Phase 3: Optimize (with user approval)
-
-For each recommended action, ask the user if they want to proceed. Then:
-
-- **Link orphans**: Use `mcp__obsidian__patch_note` to add links to orphan notes AND patch related hubs to link back
-- **Strengthen weak nodes**: Add contextual links to nodes with <3 connections
-- **Create bridge nodes**: If two clusters should connect but don't, suggest a bridging note
-- **Fix unresolved links**: Either create the missing note or remove the broken link
-
-## Phase 4: Summary
-
-After optimization, run `get_graph_stats` again and report:
-
-```
-## Optimization Complete
-
-### Before → After
-- Nodes: X → Y
-- Edges: X → Y
-- Orphans: X → Y
-
-### Changes Made
-1. [Change description]
-2. ...
-
-### Remaining Recommendations
-(Any actions skipped or for future consideration)
-```
-
-## Important
-
-- Always explain WHY a change improves the graph
-- Never delete notes without explicit user approval
-- Maintain the expert note template structure when editing
-- Apply bidirectional linking for all new connections
+Present:
+- **Current State**: Nodes, edges, orphans, top hubs
+- **Issues Found**: Numbered list of problems
+- **Recommended Actions**: What should be fixed and why
+- **Changes Made**: What you actually changed (after approval)
