@@ -139,4 +139,4 @@ MCP configuration is added to `~/.claude.json`:
 
 ## License
 
-MIT
+[Unlicense](https://unlicense.org) (Public Domain)

@@ -112,25 +112,35 @@ export async function doctor() {
   console.log(chalk.bold('\n  MCP Configuration'));
   console.log(chalk.dim(`    Config: ${getConfigPath()}`));
 
-  if (await hasMcpObsidian()) {
-    const config = await getMcpObsidianConfig();
-    const vaultPath = config.args?.[config.args.length - 1] || 'unknown';
+  try {
+    if (await hasMcpObsidian()) {
+      const config = await getMcpObsidianConfig();
+      const vaultPath = config.args?.[config.args.length - 1] || 'unknown';
 
-    console.log(chalk.green('    ✓ MCP Obsidian configured'));
-    console.log(chalk.dim(`    Vault: ${vaultPath}`));
+      console.log(chalk.green('    ✓ MCP Obsidian configured'));
+      console.log(chalk.dim(`    Vault: ${vaultPath}`));
 
-    // Check if vault exists
-    if (vaultPath !== 'unknown') {
-      if (await isObsidianVault(vaultPath)) {
-        console.log(chalk.green('    ✓ Vault path valid'));
-      } else {
-        warnings.push(`Vault path doesn't exist or isn't an Obsidian vault: ${vaultPath}`);
-        console.log(chalk.yellow('    ⚠ Vault path may be invalid'));
+      // Check if vault exists
+      if (vaultPath !== 'unknown') {
+        if (await isObsidianVault(vaultPath)) {
+          console.log(chalk.green('    ✓ Vault path valid'));
+        } else {
+          warnings.push(`Vault path doesn't exist or isn't an Obsidian vault: ${vaultPath}`);
+          console.log(chalk.yellow('    ⚠ Vault path may be invalid'));
+        }
       }
+    } else {
+      issues.push('MCP Obsidian not configured');
+      console.log(chalk.red('    ✗ Not configured'));
     }
-  } else {
-    issues.push('MCP Obsidian not configured');
-    console.log(chalk.red('    ✗ Not configured'));
+  } catch (error) {
+    if (error.code === 'INVALID_CONFIG_JSON') {
+      issues.push('~/.claude.json contains invalid JSON');
+      console.log(chalk.red('    ✗ Invalid JSON in config file'));
+      console.log(chalk.dim(`    ${error.message}`));
+    } else {
+      throw error;
+    }
   }
 
   // Summary

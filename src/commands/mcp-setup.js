@@ -48,19 +48,27 @@ export async function mcpSetup(options = {}) {
   }
 
   // Check if already configured
-  if (await hasMcpObsidian()) {
-    const config = await getMcpObsidianConfig();
-    const vaultPath = config.args?.[config.args.length - 1] || 'unknown';
+  try {
+    if (await hasMcpObsidian()) {
+      const config = await getMcpObsidianConfig();
+      const vaultPath = config.args?.[config.args.length - 1] || 'unknown';
 
-    if (!quiet) {
-      console.log(chalk.green('  ✓ MCP Obsidian is already configured'));
-      console.log(chalk.dim(`    Vault: ${vaultPath}`));
-      console.log(chalk.dim(`    Config: ${getConfigPath()}\n`));
-    } else {
-      const spinner = ora('MCP configuration').start();
-      spinner.succeed(`MCP already configured (vault: ${vaultPath})`);
+      if (!quiet) {
+        console.log(chalk.green('  ✓ MCP Obsidian is already configured'));
+        console.log(chalk.dim(`    Vault: ${vaultPath}`));
+        console.log(chalk.dim(`    Config: ${getConfigPath()}\n`));
+      } else {
+        const spinner = ora('MCP configuration').start();
+        spinner.succeed(`MCP already configured (vault: ${vaultPath})`);
+      }
+      return;
     }
-    return;
+  } catch (error) {
+    if (error.code === 'INVALID_CONFIG_JSON') {
+      console.log(chalk.red(`  Error: ${error.message}\n`));
+      process.exit(1);
+    }
+    throw error;
   }
 
   // Try to detect vaults
@@ -150,11 +158,14 @@ async function configureVault(vaultPath, quiet) {
   const spinner = ora('Configuring MCP Obsidian').start();
 
   try {
-    await configureMcpObsidian(vaultPath);
+    const backupPath = await configureMcpObsidian(vaultPath);
     spinner.succeed(`MCP configured with vault: ${vaultPath}`);
 
     if (!quiet) {
-      console.log(chalk.dim(`  Config file: ${getConfigPath()}\n`));
+      if (backupPath) {
+        console.log(chalk.dim(`  Backup: ${backupPath}`));
+      }
+      console.log(chalk.dim(`  Config: ${getConfigPath()}\n`));
     }
   } catch (error) {
     spinner.fail('Failed to configure MCP');

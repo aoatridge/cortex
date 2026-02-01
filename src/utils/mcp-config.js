@@ -23,29 +23,57 @@ const COMMON_VAULT_PATHS = [
 /**
  * Read the Claude config file
  * @returns {Promise<object>}
+ * @throws {Error} If the config file exists but contains invalid JSON
  */
 export async function readClaudeConfig() {
   if (await fs.pathExists(CLAUDE_CONFIG_PATH)) {
     const content = await fs.readFile(CLAUDE_CONFIG_PATH, 'utf-8');
     try {
       return JSON.parse(content);
-    } catch {
-      return {};
+    } catch (err) {
+      const error = new Error(
+        `Invalid JSON in ${CLAUDE_CONFIG_PATH}: ${err.message}\n` +
+        `Please fix the file manually or remove it to start fresh.`
+      );
+      error.code = 'INVALID_CONFIG_JSON';
+      throw error;
     }
   }
   return {};
 }
 
 /**
- * Write the Claude config file
+ * Create a timestamped backup of the Claude config file
+ * @returns {Promise<string|null>} - Backup path if created, null if no file to backup
+ */
+export async function backupClaudeConfig() {
+  if (!await fs.pathExists(CLAUDE_CONFIG_PATH)) {
+    return null;
+  }
+
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const backupPath = `${CLAUDE_CONFIG_PATH}.backup-${timestamp}`;
+
+  await fs.copy(CLAUDE_CONFIG_PATH, backupPath);
+  return backupPath;
+}
+
+/**
+ * Write the Claude config file (creates backup first)
  * @param {object} config - Configuration object
+ * @returns {Promise<string|null>} - Backup path if created
  */
 export async function writeClaudeConfig(config) {
+  // Create backup before modifying
+  const backupPath = await backupClaudeConfig();
+
   await fs.writeFile(
     CLAUDE_CONFIG_PATH,
     JSON.stringify(config, null, 2) + '\n',
     'utf-8'
   );
+
+  return backupPath;
 }
 
 /**
@@ -69,7 +97,7 @@ export async function getMcpObsidianConfig() {
 /**
  * Add or update MCP obsidian configuration
  * @param {string} vaultPath - Path to Obsidian vault
- * @returns {Promise<void>}
+ * @returns {Promise<string|null>} - Backup path if created
  */
 export async function configureMcpObsidian(vaultPath) {
   const config = await readClaudeConfig();
@@ -80,15 +108,15 @@ export async function configureMcpObsidian(vaultPath) {
 
   config.mcpServers.obsidian = {
     command: 'npx',
-    args: ['-y', 'github:aoatridge/mcp-obsidian', vaultPath]
+    args: ['-y', 'github:aoatridge/mcp-obsidian#v1.0.0', vaultPath]
   };
 
-  await writeClaudeConfig(config);
+  return await writeClaudeConfig(config);
 }
 
 /**
  * Remove MCP obsidian configuration
- * @returns {Promise<boolean>} - True if removed, false if wasn't present
+ * @returns {Promise<{removed: boolean, backupPath: string|null}>}
  */
 export async function removeMcpObsidian() {
   const config = await readClaudeConfig();
@@ -101,11 +129,11 @@ export async function removeMcpObsidian() {
       delete config.mcpServers;
     }
 
-    await writeClaudeConfig(config);
-    return true;
+    const backupPath = await writeClaudeConfig(config);
+    return { removed: true, backupPath };
   }
 
-  return false;
+  return { removed: false, backupPath: null };
 }
 
 /**

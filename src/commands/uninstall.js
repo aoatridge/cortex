@@ -141,21 +141,37 @@ export async function uninstall(options = {}) {
   }
 
   // Step 4: MCP configuration
-  if (!options.keepMcp && await hasMcpObsidian()) {
-    console.log('');
-    const removeMcp = options.yes || await confirm(
-      chalk.yellow('  Remove MCP Obsidian configuration from ~/.claude.json? [y/N] ')
-    );
+  try {
+    if (!options.keepMcp && await hasMcpObsidian()) {
+      console.log('');
+      const removeMcp = options.yes || await confirm(
+        chalk.yellow('  Remove MCP Obsidian configuration from ~/.claude.json? [y/N] ')
+      );
 
-    if (removeMcp) {
-      const mcpSpinner = ora('Removing MCP configuration').start();
-      try {
-        await removeMcpObsidian();
-        mcpSpinner.succeed('Removed MCP Obsidian configuration');
-      } catch (error) {
-        mcpSpinner.fail('Failed to remove MCP configuration');
-        console.error(chalk.red(`  ${error.message}`));
+      if (removeMcp) {
+        const mcpSpinner = ora('Removing MCP configuration').start();
+        try {
+          const { removed, backupPath } = await removeMcpObsidian();
+          if (removed) {
+            mcpSpinner.succeed('Removed MCP Obsidian configuration');
+            if (backupPath) {
+              console.log(chalk.dim(`    Backup: ${backupPath}`));
+            }
+          } else {
+            mcpSpinner.succeed('No MCP configuration to remove');
+          }
+        } catch (error) {
+          mcpSpinner.fail('Failed to remove MCP configuration');
+          console.error(chalk.red(`  ${error.message}`));
+        }
       }
+    }
+  } catch (error) {
+    if (error.code === 'INVALID_CONFIG_JSON') {
+      console.log(chalk.yellow('\n  ⚠ Skipping MCP cleanup: ~/.claude.json contains invalid JSON'));
+      console.log(chalk.dim(`    ${error.message}`));
+    } else {
+      throw error;
     }
   }
 

@@ -1,18 +1,22 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import { createRequire } from 'module';
 import { init } from '../src/commands/init.js';
 import { uninstall } from '../src/commands/uninstall.js';
 import { upgrade } from '../src/commands/upgrade.js';
 import { mcpSetup } from '../src/commands/mcp-setup.js';
 import { doctor } from '../src/commands/doctor.js';
 
+const require = createRequire(import.meta.url);
+const { version } = require('../package.json');
+
 const program = new Command();
 
 program
   .name('cortex-ai')
   .description('Graph-based AI memory using Obsidian as a knowledge graph')
-  .version('1.0.0');
+  .version(version);
 
 program
   .command('init')
