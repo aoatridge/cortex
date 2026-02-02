@@ -145,6 +145,9 @@ export async function mcpSetup(options = {}) {
         console.log(chalk.yellow('\n  Skipped MCP configuration.'));
         console.log(chalk.dim('  Run `cortex mcp-setup --vault /path/to/vault` later.\n'));
       }
+    } else {
+      // Quiet mode with no detected vaults - inform user
+      console.log(chalk.dim('  Run `cortex mcp-setup --vault /path/to/vault` to configure.\n'));
     }
   }
 }

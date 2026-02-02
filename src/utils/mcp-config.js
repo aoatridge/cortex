@@ -108,7 +108,7 @@ export async function configureMcpObsidian(vaultPath) {
 
   config.mcpServers.obsidian = {
     command: 'npx',
-    args: ['-y', 'github:aoatridge/mcp-obsidian#v1.0.0', vaultPath]
+    args: ['-y', 'github:aoatridge/mcp-obsidian', vaultPath]
   };
 
   return await writeClaudeConfig(config);
