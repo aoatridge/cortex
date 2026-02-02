@@ -1,5 +1,5 @@
 /**
- * cortex-ai init command
+ * cortex init command
  *
  * Installs Cortex into a project by:
  * 1. Appending to CLAUDE.md (or creating it)
@@ -61,7 +61,7 @@ export async function init(projectPath, options = {}) {
 
       if (!options.force) {
         console.log(chalk.yellow(`Cortex is already installed (v${installedVersion})`));
-        console.log(chalk.dim('  Use --force to reinstall or `cortex-ai upgrade` to update\n'));
+        console.log(chalk.dim('  Use --force to reinstall or `cortex upgrade` to update\n'));
         process.exit(1);
       }
 

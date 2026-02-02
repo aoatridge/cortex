@@ -1,5 +1,5 @@
 /**
- * cortex-ai doctor command
+ * cortex doctor command
  *
  * Verifies that Cortex is properly installed and configured.
  */
@@ -166,10 +166,10 @@ export async function doctor() {
     console.log('');
 
     if (issues.length > 0) {
-      console.log(chalk.dim('  Run `cortex-ai init` to fix installation issues.'));
+      console.log(chalk.dim('  Run `cortex init` to fix installation issues.'));
     }
     if (warnings.some(w => w.includes('Version'))) {
-      console.log(chalk.dim('  Run `cortex-ai upgrade` to update to the latest version.'));
+      console.log(chalk.dim('  Run `cortex upgrade` to update to the latest version.'));
     }
     console.log('');
   }

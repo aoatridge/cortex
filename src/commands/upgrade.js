@@ -1,5 +1,5 @@
 /**
- * cortex-ai upgrade command
+ * cortex upgrade command
  *
  * Updates Cortex templates to the latest version.
  */
@@ -39,7 +39,7 @@ export async function upgrade(options = {}) {
   // Check if Cortex is installed
   if (!await fs.pathExists(claudeMdPath)) {
     console.log(chalk.yellow('Cortex is not installed in this project.'));
-    console.log(chalk.dim('  Run `cortex-ai init` first.\n'));
+    console.log(chalk.dim('  Run `cortex init` first.\n'));
     process.exit(1);
   }
 
@@ -47,7 +47,7 @@ export async function upgrade(options = {}) {
 
   if (!hasMarkers(content)) {
     console.log(chalk.yellow('Cortex is not installed in this project.'));
-    console.log(chalk.dim('  Run `cortex-ai init` first.\n'));
+    console.log(chalk.dim('  Run `cortex init` first.\n'));
     process.exit(1);
   }
 
@@ -61,7 +61,7 @@ export async function upgrade(options = {}) {
       console.log(chalk.green('  ✓ Already up to date!\n'));
     } else {
       console.log(chalk.yellow(`  ↑ Upgrade available: v${installedVersion} → v${version}`));
-      console.log(chalk.dim('  Run `cortex-ai upgrade` to update.\n'));
+      console.log(chalk.dim('  Run `cortex upgrade` to update.\n'));
     }
     process.exit(0);
   }

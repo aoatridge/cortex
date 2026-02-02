@@ -14,7 +14,7 @@ const { version } = require('../package.json');
 const program = new Command();
 
 program
-  .name('cortex-ai')
+  .name('cortex')
   .description('Graph-based AI memory using Obsidian as a knowledge graph')
   .version(version);
 

@@ -1,5 +1,5 @@
 /**
- * cortex-ai mcp-setup command
+ * cortex mcp-setup command
  *
  * Configures the MCP Obsidian server in ~/.claude.json
  */
@@ -143,7 +143,7 @@ export async function mcpSetup(options = {}) {
         }
       } else {
         console.log(chalk.yellow('\n  Skipped MCP configuration.'));
-        console.log(chalk.dim('  Run `cortex-ai mcp-setup --vault /path/to/vault` later.\n'));
+        console.log(chalk.dim('  Run `cortex mcp-setup --vault /path/to/vault` later.\n'));
       }
     }
   }

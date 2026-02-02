@@ -1,5 +1,5 @@
 /**
- * cortex-ai uninstall command
+ * cortex uninstall command
  *
  * Removes Cortex from a project by:
  * 1. Removing the Cortex section from CLAUDE.md
