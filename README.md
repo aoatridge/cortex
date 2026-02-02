@@ -133,7 +133,7 @@ MCP configuration is added to `~/.claude.json`:
   "mcpServers": {
     "obsidian": {
       "command": "npx",
-      "args": ["-y", "github:aoatridge/mcp-obsidian#v1.0.3", "/path/to/vault"]
+      "args": ["-y", "github:aoatridge/mcp-obsidian", "/path/to/vault"]
     }
   }
 }
