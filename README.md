@@ -8,10 +8,10 @@ Cortex transforms your Obsidian vault into a "second brain" for AI agents. Notes
 
 ```bash
 # Install Cortex into any project
-npx github:aoatridge/cortex#v1.0.2 init
+npx github:aoatridge/cortex#v1.0.3 init
 
 # Or specify a project path
-npx github:aoatridge/cortex#v1.0.2 init ./my-project
+npx github:aoatridge/cortex#v1.0.3 init ./my-project
 ```
 
 That's it! Claude Code will now use your Obsidian vault as its memory.
@@ -39,11 +39,11 @@ your-project/
 Install Cortex into a project.
 
 ```bash
-npx github:aoatridge/cortex#v1.0.2 init                    # Current directory
-npx github:aoatridge/cortex#v1.0.2 init ./my-project       # Specific path
-npx github:aoatridge/cortex#v1.0.2 init --vault ~/obsidian # Specify vault location
-npx github:aoatridge/cortex#v1.0.2 init --skip-mcp         # Skip MCP configuration
-npx github:aoatridge/cortex#v1.0.2 init --force            # Reinstall over existing
+npx github:aoatridge/cortex#v1.0.3 init                    # Current directory
+npx github:aoatridge/cortex#v1.0.3 init ./my-project       # Specific path
+npx github:aoatridge/cortex#v1.0.3 init --vault ~/obsidian # Specify vault location
+npx github:aoatridge/cortex#v1.0.3 init --skip-mcp         # Skip MCP configuration
+npx github:aoatridge/cortex#v1.0.3 init --force            # Reinstall over existing
 ```
 
 ### `uninstall`
@@ -51,9 +51,9 @@ npx github:aoatridge/cortex#v1.0.2 init --force            # Reinstall over exis
 Remove Cortex from the current project.
 
 ```bash
-npx github:aoatridge/cortex#v1.0.2 uninstall          # Interactive
-npx github:aoatridge/cortex#v1.0.2 uninstall -y       # Skip confirmation
-npx github:aoatridge/cortex#v1.0.2 uninstall --keep-mcp  # Keep MCP config
+npx github:aoatridge/cortex#v1.0.3 uninstall          # Interactive
+npx github:aoatridge/cortex#v1.0.3 uninstall -y       # Skip confirmation
+npx github:aoatridge/cortex#v1.0.3 uninstall --keep-mcp  # Keep MCP config
 ```
 
 ### `upgrade`
@@ -61,8 +61,8 @@ npx github:aoatridge/cortex#v1.0.2 uninstall --keep-mcp  # Keep MCP config
 Update to the latest version.
 
 ```bash
-npx github:aoatridge/cortex#v1.0.2 upgrade --check    # Check for updates
-npx github:aoatridge/cortex#v1.0.2 upgrade            # Apply update
+npx github:aoatridge/cortex#v1.0.3 upgrade --check    # Check for updates
+npx github:aoatridge/cortex#v1.0.3 upgrade            # Apply update
 ```
 
 ### `mcp-setup`
@@ -70,8 +70,8 @@ npx github:aoatridge/cortex#v1.0.2 upgrade            # Apply update
 Configure the MCP Obsidian server.
 
 ```bash
-npx github:aoatridge/cortex#v1.0.2 mcp-setup                    # Interactive
-npx github:aoatridge/cortex#v1.0.2 mcp-setup --vault ~/obsidian # Specify vault
+npx github:aoatridge/cortex#v1.0.3 mcp-setup                    # Interactive
+npx github:aoatridge/cortex#v1.0.3 mcp-setup --vault ~/obsidian # Specify vault
 ```
 
 ### `doctor`
@@ -79,7 +79,7 @@ npx github:aoatridge/cortex#v1.0.2 mcp-setup --vault ~/obsidian # Specify vault
 Verify installation health.
 
 ```bash
-npx github:aoatridge/cortex#v1.0.2 doctor
+npx github:aoatridge/cortex#v1.0.3 doctor
 ```
 
 ## How It Works
@@ -133,7 +133,7 @@ MCP configuration is added to `~/.claude.json`:
   "mcpServers": {
     "obsidian": {
       "command": "npx",
-      "args": ["-y", "github:aoatridge/mcp-obsidian#v1.0.2", "/path/to/vault"]
+      "args": ["-y", "github:aoatridge/mcp-obsidian#v1.0.3", "/path/to/vault"]
     }
   }
 }
